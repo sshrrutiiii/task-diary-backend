@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
-@CrossOrigin(origins = "http://localhost:3000") // Allow frontend React
+@CrossOrigin(origins = "https://your-frontend.vercel.app")// Allow frontend React
 public class UserController {
 
     @Autowired
