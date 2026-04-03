@@ -8,11 +8,7 @@ public class CorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                // Add BOTH your local React port and your live Vercel URL here:
-                .allowedOrigins(
-                        "http://localhost:3000",
-                        " \"https://task-diary-frontend.vercel.app\"" // Replace this with your exact Vercel URL!
-                )
+                .allowedOriginPatterns("*")   // 🔥 allow all (safe for now)
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true);
