@@ -26,18 +26,17 @@ public class UserController {
         }
     }
 
-    // Login user
     @PostMapping("/login")
-    public String loginUser(@RequestBody User user) {
+    public ResponseEntity<?> loginUser(@RequestBody User user) {
         Optional<User> existingUser = userService.loginUser(user.getEmail(), user.getPassword());
+
         if (existingUser.isPresent()) {
-            return "Login successful!";
+            return ResponseEntity.ok(existingUser.get()); // ✅ Fix 1: Returns User JSON
         } else {
-            return "Invalid email or password!";
+            return ResponseEntity.status(401).body("Invalid email or password!");
         }
     }
 
-    // Optional: Get all users
     @GetMapping
     public Iterable<User> getAllUsers() {
         return userService.getAllUsers();
