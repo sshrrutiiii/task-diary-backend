@@ -8,12 +8,10 @@ public class CorsConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
 
         registry.addMapping("/**")
-                .allowedOrigins(
-                        "http://localhost:3000",
-                        "https://task-diary-frontend.vercel.app"
-                )
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                .allowedHeaders("*")
-                .allowCredentials(true);
+                .allowedOriginPatterns("*")   // allow all origins
+                .allowedMethods("*")          // allow ALL methods (VERY IMPORTANT)
+                .allowedHeaders("*")          // allow ALL headers
+                .exposedHeaders("*")
+                .allowCredentials(false);     // MUST be false with "*"
     }
 }
