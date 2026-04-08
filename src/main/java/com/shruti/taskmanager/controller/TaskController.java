@@ -12,6 +12,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/tasks")
+@CrossOrigin(origins = "https://task-diary-frontend.vercel.app") // ✅ FIXED
 public class TaskController {
 
     @Autowired
@@ -20,34 +21,38 @@ public class TaskController {
     @Autowired
     private UserRepository userRepository;
 
-    // 1. GET ALL TASKS (Matches fetchTasks in App.js)
+    // GET TASKS
     @GetMapping
     public List<Task> getTasks(@RequestParam(required = false, defaultValue = "1") Long userId) {
         User user = userRepository.findById(userId).orElse(null);
         if (user != null) {
             return taskRepository.findByUser(user);
         }
-        return taskRepository.findAll(); // Fallback if user doesn't exist yet
+        return taskRepository.findAll();
     }
 
-    // 2. ADD A TASK (Matches handleAddTask in App.js)
+    // ADD TASK
     @PostMapping
-    public Task addTask(@RequestBody Task task, @RequestParam(required = false, defaultValue = "1") Long userId) {
+    public Task addTask(@RequestBody Task task,
+                        @RequestParam(required = false, defaultValue = "1") Long userId) {
+
         User user = userRepository.findById(userId).orElse(null);
+
         if (user != null) {
             task.setUser(user);
         }
+
         return taskRepository.save(task);
     }
 
-    // 3. UPDATE A TASK (Matches toggleComplete in App.js)
+    // UPDATE TASK
     @PutMapping("/{id}")
     public Task updateTask(@PathVariable Long id, @RequestBody Task updatedTaskData) {
         Optional<Task> existingTaskOptional = taskRepository.findById(id);
 
         if (existingTaskOptional.isPresent()) {
             Task existingTask = existingTaskOptional.get();
-            // Update the necessary fields
+
             existingTask.setIsCompleted(updatedTaskData.getIsCompleted());
             existingTask.setStatus(updatedTaskData.getStatus());
             existingTask.setTitle(updatedTaskData.getTitle());
@@ -63,7 +68,7 @@ public class TaskController {
         }
     }
 
-    // 4. DELETE A TASK (Matches handleDeleteTask in App.js)
+    // DELETE TASK
     @DeleteMapping("/{id}")
     public void deleteTask(@PathVariable Long id) {
         taskRepository.deleteById(id);

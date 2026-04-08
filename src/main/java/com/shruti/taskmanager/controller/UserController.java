@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "https://task-diary-frontend.vercel.app") // ✅ FIXED
 public class UserController {
 
     @Autowired
@@ -31,7 +31,7 @@ public class UserController {
         Optional<User> existingUser = userService.loginUser(user.getEmail(), user.getPassword());
 
         if (existingUser.isPresent()) {
-            return ResponseEntity.ok(existingUser.get()); // ✅ Fix 1: Returns User JSON
+            return ResponseEntity.ok(existingUser.get());
         } else {
             return ResponseEntity.status(401).body("Invalid email or password!");
         }
